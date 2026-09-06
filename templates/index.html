@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HelpNow</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            HelpNow
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/report">Report Emergency</a>
+            <a href="/login">Login</a>
+        </div>
+    </nav>
+
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Help When You Need It Most
+            </h1>
+
+            <p>
+                Quickly report an emergency and connect
+                with nearby verified helpers.
+            </p>
+
+            <button onclick="location.href='/report'">
+                🚨 Report Emergency
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <section class="emergency-section">
+
+        <h2>Emergency Services</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>🚗</h3>
+                <h3>Vehicle Breakdown</h3>
+                <p>Find nearby vehicle assistance.</p>
+            </div>
+
+            <div class="card">
+                <h3>🚑</h3>
+                <h3>Accident</h3>
+                <p>Report an accident quickly.</p>
+            </div>
+
+            <div class="card">
+                <h3>🩸</h3>
+                <h3>Blood Requirement</h3>
+                <p>Find verified blood donors.</p>
+            </div>
+
+            <div class="card">
+                <h3>🌊</h3>
+                <h3>Flood</h3>
+                <p>Report flood situations.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+<section class="location-section">
+
+    <h2>📍 Find My Location</h2>
+
+    <button type="button" onclick="getLocation()">
+        📍 Get My Location
+    </button>
+
+    <br><br>
+
+    <label>Latitude:</label>
+    <input type="text" id="latitude" readonly>
+
+    <br><br>
+
+    <label>Longitude:</label>
+    <input type="text" id="longitude" readonly>
+
+</section>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+import sqlite3
+import os
+
+# Database folder path
+database_folder = "database"
+
+# Create database folder if it does not exist
+os.makedirs(database_folder, exist_ok=True)
+
+# Database file path
+database_path = os.path.join(database_folder, "helpnow.db")
+
+# Connect to SQLite database
+connection = sqlite3.connect(database_path)
+
+cursor = connection.cursor()
+
+print("Database connection successful!")
+
+connection.close()
