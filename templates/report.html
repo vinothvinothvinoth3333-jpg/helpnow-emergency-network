@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report Emergency - HelpNow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            HelpNow
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/report">Report Emergency</a>
+            <a href="/login">Login</a>
+        </div>
+
+    </nav>
+
+
+    <!-- Report Emergency Section -->
+    <section class="report-section">
+
+        <h1>🚨 Report Emergency</h1>
+
+        <p>
+            Please provide the emergency details.
+        </p>
+
+
+        <form>
+
+            <!-- Emergency Type -->
+            <label for="emergencyType">
+                Emergency Type
+            </label>
+
+            <select id="emergencyType" required>
+
+                <option value="">
+                    Select Emergency
+                </option>
+
+                <option value="Vehicle Breakdown">
+                    Vehicle Breakdown
+                </option>
+
+                <option value="Accident">
+                    Accident
+                </option>
+
+                <option value="Lost Child">
+                    Lost Child
+                </option>
+
+                <option value="Blood Requirement">
+                    Blood Requirement
+                </option>
+
+                <option value="Flood">
+                    Flood
+                </option>
+
+                <option value="Road Blockage">
+                    Road Blockage
+                </option>
+
+                <option value="Fire">
+                    Fire
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+
+            <br><br>
+
+
+            <!-- Description -->
+            <label for="description">
+                Description
+            </label>
+
+            <textarea
+                id="description"
+                placeholder="Describe the emergency..."
+                rows="5"
+                required></textarea>
+
+
+            <br><br>
+
+
+            <!-- Location -->
+            <button type="button" onclick="getLocation()">
+                📍 Get My Location
+            </button>
+
+
+            <br><br>
+
+
+            <label for="latitude">
+                Latitude
+            </label>
+
+            <input
+                type="text"
+                id="latitude"
+                readonly>
+
+
+            <br><br>
+
+
+            <label for="longitude">
+                Longitude
+            </label>
+
+            <input
+                type="text"
+                id="longitude"
+                readonly>
+
+
+            <br><br>
+
+
+            <!-- Submit -->
+            <button type="submit">
+                🚨 Submit Emergency Report
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>
