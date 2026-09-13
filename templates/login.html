@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - HelpNow</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">HelpNow</div>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('report') }}">Report Emergency</a>
+        </div>
+    </nav>
+    <main class="report-section">
+        <h1>Login</h1>
+        <p>Owner notifications are available in the website dashboard.</p>
+        <a class="button-link" href="{{ url_for('owner_dashboard') }}">Open Owner Dashboard</a>
+        <br><br>
+        <p>Account login is coming soon. You can still submit an emergency report as a guest.</p>
+        <a class="button-link" href="{{ url_for('report') }}">Report an Emergency</a>
+    </main>
+</body>
+</html>

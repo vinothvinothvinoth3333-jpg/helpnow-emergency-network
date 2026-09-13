@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard - HelpNow</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">HelpNow Owner</div>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('report') }}">Report Emergency</a>
+        </div>
+    </nav>
+
+    <main class="dashboard-section">
+        <h1>Emergency Notifications</h1>
+        {% for notification in notifications %}
+        <p class="form-message warning">{{ notification.message }}<br><small>{{ notification.created_at }}</small></p>
+        {% else %}
+        <p class="form-message success">No emergency notifications yet.</p>
+        {% endfor %}
+
+        <h2>Emergency Reports</h2>
+        <div class="report-list">
+            {% for report in reports %}
+            <article class="report-item">
+                <h3>{{ report.type }} <span>{{ report.status|capitalize }}</span></h3>
+                <p>{{ report.description }}</p>
+                <small>Report #{{ report.id }} | {{ report.created_at }}</small>
+                {% if report.recipient_phone %}
+                <p class="contact-details">Contact number: <a href="tel:{{ report.recipient_phone }}">{{ report.recipient_phone }}</a></p>
+                {% else %}
+                <p class="contact-details">No contact number provided.</p>
+                {% endif %}
+                {% if report.latitude is not none and report.longitude is not none %}
+                <p class="location-details">
+                    Location: {{ report.latitude }}, {{ report.longitude }}<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ report.latitude }},{{ report.longitude }}" target="_blank" rel="noopener">View user location on map</a>
+                </p>
+                {% else %}
+                <p class="location-details">Location was not provided.</p>
+                {% endif %}
+            </article>
+            {% else %}
+            <p>No reports yet.</p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

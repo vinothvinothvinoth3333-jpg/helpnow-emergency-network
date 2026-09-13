@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Status - HelpNow</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">HelpNow</div>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('report') }}">Report Emergency</a>
+        </div>
+    </nav>
+
+    <main class="report-section">
+        <h1>Help Request Status</h1>
+        <p class="form-message success">{{ notification.message }}</p>
+        <p><strong>Emergency:</strong> {{ report.type }}</p>
+        <p><strong>Status:</strong> {{ report.status|capitalize }}</p>
+        <p><strong>Description:</strong> {{ report.description }}</p>
+        <a class="button-link" href="{{ url_for('report') }}">Report Another Emergency</a>
+    </main>
+</body>
+</html>
