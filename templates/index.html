@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,23 +8,29 @@
 
     <title>HelpNow</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
 
+    <!-- Navigation Bar -->
     <nav class="navbar">
+
         <div class="logo">
             HelpNow
         </div>
+
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/report">Report Emergency</a>
             <a href="/login">Login</a>
         </div>
+
     </nav>
 
 
+    <!-- Hero Section -->
     <section class="hero">
 
         <div class="hero-content">
@@ -46,6 +53,7 @@
     </section>
 
 
+    <!-- Emergency Services -->
     <section class="emergency-section">
 
         <h2>Emergency Services</h2>
@@ -58,17 +66,20 @@
                 <p>Find nearby vehicle assistance.</p>
             </div>
 
+
             <div class="card">
                 <h3>🚑</h3>
                 <h3>Accident</h3>
                 <p>Report an accident quickly.</p>
             </div>
 
+
             <div class="card">
                 <h3>🩸</h3>
                 <h3>Blood Requirement</h3>
                 <p>Find verified blood donors.</p>
             </div>
+
 
             <div class="card">
                 <h3>🌊</h3>
@@ -80,26 +91,39 @@
 
     </section>
 
-<section class="location-section">
 
-    <h2>📍 Find My Location</h2>
+    <!-- Location Section -->
+    <section class="location-section">
 
-    <button type="button" onclick="getLocation()">
-        📍 Get My Location
-    </button>
+        <h2>📍 Find My Location</h2>
 
-    <br><br>
+        <button type="button" onclick="getLocation()">
+            📍 Get My Location
+        </button>
 
-    <label>Latitude:</label>
-    <input type="text" id="latitude" readonly>
+        <br><br>
 
-    <br><br>
+        <label>Latitude:</label>
 
-    <label>Longitude:</label>
-    <input type="text" id="longitude" readonly>
+        <input type="text"
+               id="latitude"
+               readonly>
 
-</section>
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <br><br>
+
+        <label>Longitude:</label>
+
+        <input type="text"
+               id="longitude"
+               readonly>
+
+    </section>
+
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
 </body>
 
 </html>
+```

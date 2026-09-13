@@ -3,6 +3,7 @@ function getLocation() {
     if (navigator.geolocation) {
 
         navigator.geolocation.getCurrentPosition(
+
             function(position) {
 
                 const latitude = position.coords.latitude;
@@ -11,12 +12,16 @@ function getLocation() {
                 document.getElementById("latitude").value = latitude;
                 document.getElementById("longitude").value = longitude;
 
+                alert("Location found successfully!");
+
             },
+
             function(error) {
 
-                alert("Unable to get your location.");
+                alert("Unable to get your location. Please allow location permission.");
 
             }
+
         );
 
     } else {
