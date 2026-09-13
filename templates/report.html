@@ -23,7 +23,7 @@
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/report">Report Emergency</a>
-            <a href="/login">Login</a>
+            <a class="owner-link" href="{{ url_for('login', next='owner_dashboard') }}">Owner Login</a>
         </div>
 
     </nav>
@@ -34,19 +34,24 @@
 
         <h1>🚨 Report Emergency</h1>
 
-        <p>
-            Please provide the emergency details.
-        </p>
+        <p>Please provide the emergency details.</p>
+
+        {% if error %}
+        <p class="form-message error">{{ error }}</p>
+        {% elif request.args.get('submitted') %}
+        <p class="form-message success">Your emergency report was submitted. The HelpNow owner has been notified.</p>
+        <a class="button-link" href="{{ url_for('report_status', report_id=request.args.get('submitted')) }}">View Help Status</a>
+        {% endif %}
 
 
-        <form>
+        <form method="post" action="{{ url_for('report') }}">
 
             <!-- Emergency Type -->
             <label for="emergencyType">
                 Emergency Type
             </label>
 
-            <select id="emergencyType" required>
+            <select id="emergencyType" name="emergency_type" required>
 
                 <option value="">
                     Select Emergency
@@ -97,10 +102,18 @@
 
             <textarea
                 id="description"
+                name="description"
                 placeholder="Describe the emergency..."
                 rows="5"
                 required></textarea>
 
+            <label for="contact_number">Contact number (optional)</label>
+            <input
+                type="tel"
+                id="contact_number"
+                name="contact_number"
+                placeholder="Example: 0785811635"
+                pattern="(0|\+94|94)7[0-9]{8}">
 
             <br><br>
 
@@ -121,6 +134,7 @@
             <input
                 type="text"
                 id="latitude"
+                name="latitude"
                 readonly>
 
 
@@ -134,7 +148,13 @@
             <input
                 type="text"
                 id="longitude"
+                name="longitude"
                 readonly>
+
+            <p id="locationResult" class="location-result" hidden></p>
+            <a id="mapLink" class="button-link map-link" href="#" target="_blank" rel="noopener" hidden>
+                Open My Location in Map
+            </a>
 
 
             <br><br>
