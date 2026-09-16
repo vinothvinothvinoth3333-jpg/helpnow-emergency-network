@@ -40,6 +40,10 @@
         <p class="form-message error">{{ error }}</p>
         {% elif request.args.get('submitted') %}
         <p class="form-message success">Your emergency report was submitted. The HelpNow owner has been notified.</p>
+        {% if request.args.get('live') == '1' %}
+        <p id="liveLocationStatus" class="form-message success">Live location sharing is starting...</p>
+        <button id="stopLiveLocation" type="button" class="secondary-button">Stop Live Location</button>
+        {% endif %}
         <a class="button-link" href="{{ url_for('report_status', report_id=request.args.get('submitted')) }}">View Help Status</a>
         {% endif %}
 
@@ -155,6 +159,11 @@
             <a id="mapLink" class="button-link map-link" href="#" target="_blank" rel="noopener" hidden>
                 Open My Location in Map
             </a>
+
+            <label class="live-location-option">
+                <input type="checkbox" name="share_live_location">
+                Share my live location with the HelpNow owner
+            </label>
 
 
             <br><br>

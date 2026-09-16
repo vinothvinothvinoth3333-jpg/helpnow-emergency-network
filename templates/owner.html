@@ -38,11 +38,12 @@
                 {% endif %}
                 {% if report.latitude is not none and report.longitude is not none %}
                 <p class="location-details">
-                    Location: {{ report.latitude }}, {{ report.longitude }}<br>
-                    <a href="https://www.google.com/maps/search/?api=1&query={{ report.latitude }},{{ report.longitude }}" target="_blank" rel="noopener">View user location on map</a>
+                    Location: <span data-location="{{ report.id }}">{{ report.latitude }}, {{ report.longitude }}</span>
+                    {% if report.live_location %}<span class="live-badge" data-live="{{ report.id }}">LIVE</span>{% endif %}<br>
+                    <a data-map-link="{{ report.id }}" href="https://www.google.com/maps/search/?api=1&query={{ report.latitude }},{{ report.longitude }}" target="_blank" rel="noopener">View user location on map</a>
                 </p>
                 {% else %}
-                <p class="location-details">Location was not provided.</p>
+                <p class="location-details" data-location-details="{{ report.id }}">Location was not provided.</p>
                 {% endif %}
             </article>
             {% else %}
@@ -50,5 +51,6 @@
             {% endfor %}
         </div>
     </main>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

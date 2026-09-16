@@ -2,7 +2,7 @@ import re
 import sqlite3
 from pathlib import Path
 
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
@@ -39,6 +39,8 @@ def ensure_database():
                 description TEXT,
                 latitude REAL,
                 longitude REAL,
+                live_location INTEGER DEFAULT 0,
+                location_updated_at TIMESTAMP,
                 status TEXT DEFAULT 'pending',
                 priority TEXT DEFAULT 'normal',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -95,6 +97,14 @@ def ensure_database():
             connection.execute(
                 "ALTER TABLE emergency_reports ADD COLUMN recipient_phone TEXT"
             )
+        if "live_location" not in columns:
+            connection.execute(
+                "ALTER TABLE emergency_reports ADD COLUMN live_location INTEGER DEFAULT 0"
+            )
+        if "location_updated_at" not in columns:
+            connection.execute(
+                "ALTER TABLE emergency_reports ADD COLUMN location_updated_at TIMESTAMP"
+            )
 
 
 ensure_database()
@@ -149,6 +159,8 @@ def report():
                 error="Latitude and longitude must be valid numbers.",
             ), 400
 
+        live_location = 1 if request.form.get("share_live_location") == "on" else 0
+
         with get_connection() as connection:
             guest = connection.execute(
                 "SELECT id FROM users WHERE email = ?",
@@ -157,8 +169,9 @@ def report():
             report_cursor = connection.execute(
                 """
                 INSERT INTO emergency_reports
-                    (user_id, type, description, latitude, longitude, recipient_phone)
-                VALUES (?, ?, ?, ?, ?, ?)
+                    (user_id, type, description, latitude, longitude, live_location,
+                     location_updated_at, recipient_phone)
+                VALUES (?, ?, ?, ?, ?, ?, CASE WHEN ? = 1 THEN CURRENT_TIMESTAMP ELSE NULL END, ?)
                 """,
                 (
                     guest["id"],
@@ -166,6 +179,8 @@ def report():
                     description,
                     latitude,
                     longitude,
+                    live_location,
+                    live_location,
                     contact_number,
                 ),
             )
@@ -197,9 +212,78 @@ def report():
                 ),
             )
 
-        return redirect(url_for("report", submitted=report_id))
+        return redirect(url_for("report", submitted=report_id, live=live_location))
 
     return render_template("report.html")
+
+
+@app.route("/api/reports/<int:report_id>/location", methods=["POST"])
+def update_report_location(report_id):
+    data = request.get_json(silent=True) or {}
+    try:
+        latitude = float(data["latitude"])
+        longitude = float(data["longitude"])
+    except (KeyError, TypeError, ValueError):
+        return jsonify(error="Valid latitude and longitude are required."), 400
+
+    if not -90 <= latitude <= 90 or not -180 <= longitude <= 180:
+        return jsonify(error="Coordinates are outside valid ranges."), 400
+
+    with get_connection() as connection:
+        result = connection.execute(
+            """
+            UPDATE emergency_reports
+            SET latitude = ?, longitude = ?, live_location = 1,
+                location_updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+            """,
+            (latitude, longitude, report_id),
+        )
+        if result.rowcount == 0:
+            return jsonify(error="Emergency report not found."), 404
+
+    return jsonify(latitude=latitude, longitude=longitude)
+
+
+@app.route("/api/reports/<int:report_id>/location/stop", methods=["POST"])
+def stop_report_location(report_id):
+    with get_connection() as connection:
+        result = connection.execute(
+            "UPDATE emergency_reports SET live_location = 0 WHERE id = ?",
+            (report_id,),
+        )
+        if result.rowcount == 0:
+            return jsonify(error="Emergency report not found."), 404
+
+    return jsonify(stopped=True)
+
+
+@app.route("/api/owner/reports")
+def owner_report_locations():
+    if session.get("owner_id") is None:
+        return jsonify(error="Owner login required."), 401
+
+    with get_connection() as connection:
+        reports = connection.execute(
+            """
+            SELECT id, latitude, longitude, live_location, location_updated_at
+            FROM emergency_reports
+            ORDER BY id DESC
+            """
+        ).fetchall()
+
+    return jsonify(
+        reports=[
+            {
+                "id": report["id"],
+                "latitude": report["latitude"],
+                "longitude": report["longitude"],
+                "live_location": bool(report["live_location"]),
+                "location_updated_at": report["location_updated_at"],
+            }
+            for report in reports
+        ]
+    )
 
 
 @app.route("/status/<int:report_id>")

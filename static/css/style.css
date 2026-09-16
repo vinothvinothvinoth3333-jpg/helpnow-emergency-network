@@ -138,6 +138,23 @@ body {
     transform: translateY(-2px);
 }
 
+.secondary-button {
+    margin: 0 0 16px;
+    padding: 10px 16px;
+    border: 1px solid var(--teal);
+    border-radius: 6px;
+    background: #ffffff;
+    color: var(--teal-dark);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+}
+
+.secondary-button:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
 .emergency-section {
     padding: 56px clamp(20px, 8%, 120px) 72px;
     text-align: center;
@@ -350,6 +367,31 @@ body {
 .location-details a {
     color: var(--teal-dark);
     font-weight: bold;
+}
+
+.live-location-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.live-location-option input {
+    width: auto;
+}
+
+.live-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--teal);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
 }
 
 .contact-details {

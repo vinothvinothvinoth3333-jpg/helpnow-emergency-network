@@ -44,6 +44,8 @@ CREATE TABLE IF NOT EXISTS emergency_reports (
     description TEXT,
     latitude REAL,
     longitude REAL,
+    live_location INTEGER DEFAULT 0,
+    location_updated_at TIMESTAMP,
     status TEXT DEFAULT 'pending',
     priority TEXT DEFAULT 'normal',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
